@@ -1,0 +1,11 @@
+browser->server: HTTP POST ../new_note_spa 
+
+note over browser:
+The browser uses the code from spa.js to
+create a object with the note and the 
+current date-time. This is then pushed
+to the database and an updated database
+is drawn on the page
+end note
+
+server-->browser: HTTP 201
