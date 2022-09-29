@@ -8,7 +8,7 @@ const App = () => {
   const all = good+neutral+bad
 
   const Header = ({text}) => (
-    <div class="header">
+    <div>
       <h1>{text}</h1>
     </div>
   )
@@ -19,14 +19,14 @@ const App = () => {
     const [good, neutral, bad, all, avg, pos] = props.values
     if (all < 1){
       return (
-        <div class="stats">
+        <div>
           <Header text="Statistics"/>
           No feedback given
         </div>
       )
     }
     return (
-      <div class="stats">
+      <div>
         <Header text="Statistics"/>
         <div>good {good}</div>
         <div>neutral {neutral}</div>
@@ -42,7 +42,7 @@ const App = () => {
   return (
     <>
       <Header text="Give feedback"/>
-      <div class="buttons">
+      <div>
         <Button handleClick={() => setGood(good+1)} text="good"/>
         <Button handleClick={() => setNeutral(neutral+1)} text="neutral"/>
         <Button handleClick={() => setBad(bad+1)} text="bad"/>
