@@ -15,6 +15,30 @@ const App = () => {
   // const Part = ({text, value}) => <div>{text} {value}</div>
   const Button = ({ handleClick, text }) => ( <button onClick={handleClick}> {text} </button> )
   
+  const Statistics = (props) => {
+    const [good, neutral, bad, all, avg, pos] = props.values
+    if (all < 1){
+      return (
+        <div class="stats">
+          <Header text="Statistics"/>
+          No feedback given
+        </div>
+      )
+    }
+    return (
+      <div class="stats">
+        <Header text="Statistics"/>
+        <div>good {good}</div>
+        <div>neutral {neutral}</div>
+        <div>bad {bad}</div>
+        <div>all {all}</div>
+        <div>average {avg}</div>
+        <div>positive {pos}</div>
+      </div>
+      )
+      
+  }
+  
   return (
     <>
       <Header text="Give feedback"/>
@@ -24,15 +48,12 @@ const App = () => {
         <Button handleClick={() => setBad(bad+1)} text="bad"/>
       </div>
       
-      <div class="stats">
-        <Header text="Statistics"/>
-        <div>good {good}</div>
-        <div>neutral {neutral}</div>
-        <div>bad {bad}</div>
-        <div>all {all}</div>
-        <div>average {(good-bad)/(all)}</div>
-        <div>positive {good/all}</div>
-      </div>  
+      <Statistics values={[good, 
+                          neutral, 
+                          bad, 
+                          all, 
+                          (good-bad)/(all), 
+                          good/all]}/>
     </>
   )
 }
