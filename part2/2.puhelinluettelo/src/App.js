@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
 const Person = ({name, number}) => {
   return (
   // Woah, the key attribute does NOT have to be added to the div?
@@ -64,14 +66,18 @@ const PersonForm = ({ persons, setPersons }) => {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newFilter, setNewFilter] = useState('')
   const handleFilterChange = (e) => { setNewFilter(e.target.value) }
+
+  const hook = () => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+      })
+  }
+  useEffect(hook, [])
 
   const personsToShow = persons.filter(
     person => person.name.toLowerCase().startsWith(newFilter.toLowerCase())
