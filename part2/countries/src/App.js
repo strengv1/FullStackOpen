@@ -29,23 +29,22 @@ const Countries = ({ countriesToShow }) => {
       </div>
      )
   } else {
-    return(<div>
-      No country matches the results
-    </div>)
+    return(<div>No country matches the results</div>)
   }
 }
 
 const Country = ({ country }) => {
   const languages = Object.values(country.languages)
+  const {name, capital, area} = country 
   return (
     <>
       <h2> 
-        {country.name.common}
+        {name.common}
       </h2>
       <p>
-        Capital: {country.capital[0]} 
+        Capital: {capital[0]} 
         <br/>
-        Area: {country.area}
+        Area: {area}
       </p>
       <h3>Languages:</h3>
       {languages.map(
