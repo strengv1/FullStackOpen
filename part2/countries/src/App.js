@@ -44,22 +44,13 @@ const ListOfCountries = ({ countries }) => {
 const Countries = ({ countriesToShow }) => {
   
   if (countriesToShow.length > 10) {
-    return ( 
-      <div>
-        Too many matches, specify another filter
-      </div>  )
+    return ( <div> Too many matches, specify another filter</div> )
   } else if (countriesToShow.length >= 2) {
-    return (
-        <ListOfCountries countries={countriesToShow}/>
-    )
+    return ( <ListOfCountries countries={countriesToShow}/> )
   } else if (countriesToShow.length === 1) {
-    return (
-      <div >
-        <Country country={countriesToShow[0]}/>
-      </div>
-     )
+    return ( <Country country={countriesToShow[0]}/> )
   } else {
-    return(<div>No country matches the results</div>)
+    return( <div>No country matches the results</div> )
   }
 }
 
