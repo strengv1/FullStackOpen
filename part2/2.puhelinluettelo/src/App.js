@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 const Person = ({name, number}) => {
   return (
@@ -45,17 +45,16 @@ const PersonForm = ({ persons, setPersons }) => {
         number: newNumber
       }
 
-      axios
-        .post('http://localhost:3001/persons', personObj)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      personService
+        .create(personObj)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
-        })
-        .catch(error => {
-          alert(`Error: ${error}`)}
-        )
-      
+      })
+      .catch(error => {
+        alert(`Error: ${error}`)}
+      )
     }
   }
 
@@ -79,14 +78,13 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
   const handleFilterChange = (e) => { setNewFilter(e.target.value) }
 
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
-  }
-  useEffect(hook, [])
+  }, [])
 
   const personsToShow = persons.filter(
     person => person.name.toLowerCase().startsWith(newFilter.toLowerCase())
