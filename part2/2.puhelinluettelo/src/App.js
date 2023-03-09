@@ -11,12 +11,15 @@ const Person = ({name, number}) => {
   )
 }
 
-const Persons = ({personsToShow}) => {
+const Persons = ({personsToShow, removePerson}) => {
   return (
     <div>
       {personsToShow.map(
         person => 
-          <Person key={person.name} name={person.name} number={person.number} />
+          <li key={person.name}>
+            <Person name={person.name} number={person.number} />
+            <button id={person.name} onClick={() => removePerson(person.id)}>Delete</button>
+          </li>
       )}
     </div>
    )
@@ -86,6 +89,26 @@ const App = () => {
       })
   }, [])
 
+  const removePerson = (id) => {
+    const removeThis = persons.find( person => person.id === id)
+    if (!( removeThis ) ) {
+      alert(`${removeThis.name} not found in the phonebook`)
+    } else {
+      if ( window.confirm(`Are you sure you want to delete ${removeThis.name} from phonebook?`) ) {
+        personService
+          .remove(id)
+          .catch(error => {
+            alert(`Error: ${error}`)
+          })
+        setPersons(
+          persons.filter((person) => {
+          return person.id !== id;
+          })
+        )
+      }
+    }
+  }
+
   const personsToShow = persons.filter(
     person => person.name.toLowerCase().startsWith(newFilter.toLowerCase())
   )
@@ -99,7 +122,7 @@ const App = () => {
       <PersonForm persons={persons} setPersons={setPersons}/> 
   
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow}/>
+      <Persons personsToShow={personsToShow} removePerson={removePerson}/>
     </>
   )
 }
