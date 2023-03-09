@@ -1,12 +1,25 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
+import './index.css'
 
-const Person = ({name, number}) => {
+const Notification = ({ message }) => {
+  if (message === null || message==='') {
+    return null
+  }
+
+  return (
+    <div className="notification">
+      {message}
+    </div>
+  )
+}
+
+const Person = ({name, number, id, removePerson}) => {
   return (
   // Woah, the key attribute does NOT have to be added to the div?
   // or addressed in any way here.. 
     <div> 
-      {name} {number}
+      {name} {number} <button id={name} onClick={() => removePerson(id)}>Delete</button>
     </div>
   )
 }
@@ -16,10 +29,7 @@ const Persons = ({personsToShow, removePerson}) => {
     <div>
       {personsToShow.map(
         person => 
-          <li key={person.name}>
-            <Person name={person.name} number={person.number} />
-            <button id={person.name} onClick={() => removePerson(person.id)}>Delete</button>
-          </li>
+            <Person key={person.name} name={person.name} number={person.number} id={person.id} removePerson={removePerson}/>
       )}
     </div>
    )
@@ -99,7 +109,8 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newFilter, setNewFilter] = useState('')
   const handleFilterChange = (e) => { setNewFilter(e.target.value) }
-
+  const [errorMessage, setErrorMessage] = useState('')
+  
   useEffect(() => {
     personService
       .getAll()
@@ -119,6 +130,14 @@ const App = () => {
           .catch(error => {
             alert(`Error: ${error}`)
           })
+
+          setErrorMessage(
+            `${removeThis.name} removed succesfully`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        
         setPersons(
           persons.filter((person) => {
             return person.id !== id;
@@ -135,6 +154,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange}/>
       
       <h3>Add a new</h3>      
