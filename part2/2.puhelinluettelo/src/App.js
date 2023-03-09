@@ -38,10 +38,29 @@ const PersonForm = ({ persons, setPersons }) => {
   const handleNameChange = (e) => { setNewName(e.target.value) }
   const handleNumberChange = (e) => { setNewNumber(e.target.value) }
 
+  const updatePerson = id => {
+    const person = persons.find(n => n.id === id)
+    const updatedPerson = { ...person, number: newNumber }
+    
+    personService
+      .update(id, updatedPerson)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
+      .catch(error => {
+        alert(`Error: ${error}`)}
+      )
+  }
+
   const addPerson = (e) => {
     e.preventDefault()
-    if ( persons.find( person => person.name === newName) ) {
-      alert(`${newName} is already added to phonebook`)
+    const foundPersons = persons.find( person => person.name === newName)
+    if ( foundPersons ) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        updatePerson(foundPersons.id)
+      }
     } else {
       const personObj = {
         name: newName,
@@ -102,7 +121,7 @@ const App = () => {
           })
         setPersons(
           persons.filter((person) => {
-          return person.id !== id;
+            return person.id !== id;
           })
         )
       }
