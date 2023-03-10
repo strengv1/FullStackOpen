@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react'
 import personService from './services/persons'
 import './index.css'
 
-const Notification = ({ message }) => {
+const Notification = ({ message, color }) => {
+  const colorStyle = {color: color}
   if (message === null || message==='') {
     return null
   }
 
   return (
-    <div className="notification">
+    <div style={colorStyle} className="notification">
       {message}
     </div>
   )
@@ -42,7 +43,7 @@ const Filter = ({newFilter, handleFilterChange}) => {
   )
 }
 
-const PersonForm = ({ persons, setPersons }) => {
+const PersonForm = ({ persons, setPersons, showNotification }) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const handleNameChange = (e) => { setNewName(e.target.value) }
@@ -58,10 +59,13 @@ const PersonForm = ({ persons, setPersons }) => {
         setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
         setNewName('')
         setNewNumber('')
+
+        showNotification(`Changed ${returnedPerson.name}'s number succesfully`, false)
       })
       .catch(error => {
-        alert(`Error: ${error}`)}
-      )
+        showNotification(`Information of ${person.name} has already been removed from the server`, true)
+        console.log(`Error: ${error}`)
+      })
   }
 
   const addPerson = (e) => {
@@ -83,8 +87,11 @@ const PersonForm = ({ persons, setPersons }) => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+
+          showNotification(`Added ${returnedPerson.name}`, false)
       })
       .catch(error => {
+        showNotification(`Something went wrong`, true)
         alert(`Error: ${error}`)}
       )
     }
@@ -109,8 +116,17 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newFilter, setNewFilter] = useState('')
   const handleFilterChange = (e) => { setNewFilter(e.target.value) }
-  const [errorMessage, setErrorMessage] = useState('')
-  
+  const [notificationMessage, setNotificationMessage] = useState('')
+  const [notificationColor, setNotificationColor] = useState('green')
+
+  const showNotification = (msg, isError) => {
+    setNotificationColor(isError ? 'red' : 'green')
+    setNotificationMessage(msg)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
+  }
+
   useEffect(() => {
     personService
       .getAll()
@@ -128,15 +144,11 @@ const App = () => {
         personService
           .remove(id)
           .catch(error => {
-            alert(`Error: ${error}`)
+            showNotification(`Something went wrong`, true)
+            console.log(`Error: ${error}`)
           })
 
-          setErrorMessage(
-            `${removeThis.name} removed succesfully`
-          )
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+          showNotification(`${removeThis.name} removed succesfully`, false)
         
         setPersons(
           persons.filter((person) => {
@@ -154,11 +166,11 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={notificationMessage} color={notificationColor}/>
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange}/>
       
       <h3>Add a new</h3>      
-      <PersonForm persons={persons} setPersons={setPersons}/> 
+      <PersonForm persons={persons} setPersons={setPersons} showNotification={showNotification}/> 
   
       <h3>Numbers</h3>
       <Persons personsToShow={personsToShow} removePerson={removePerson}/>
