@@ -46,7 +46,24 @@ app.get('/info', (req, res) => {
 app.get('/api/phonebook', (req, res) => {
     res.json(phonebook)
 })
+app.get('/api/phonebook/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const personObj = phonebook.find(person => person.id === id)
+    console.log(personObj)
+    if (personObj) {
+        response.json(personObj)
+    } else {
+        response.status(404).end() 
+    }
+})
 
+app.delete('/api/phonebook/:id', (request, response) => {
+    const id = Number(request.params.id)
+    phonebook = phonebook.filter(person => person.id !== id)
+  
+    response.status(204).end()
+  })  
+  
 // Start the server
 const PORT = 3001
 app.listen(PORT, () => {
