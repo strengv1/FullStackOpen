@@ -32,7 +32,8 @@ app.get('/', (req, res) => {
     res.send('<h2>Phonebook!</h2>')
   })
 
-// info page
+
+  // info page
 app.get('/info', (req, res) => {
     const now = new Date();
     const html = `
@@ -41,6 +42,7 @@ app.get('/info', (req, res) => {
     `
     res.send(html)
 })
+
 
 // API-page
 app.get('/api/phonebook', (req, res) => {
@@ -57,13 +59,42 @@ app.get('/api/phonebook/:id', (request, response) => {
     }
 })
 
+// Delete person
 app.delete('/api/phonebook/:id', (request, response) => {
     const id = Number(request.params.id)
     phonebook = phonebook.filter(person => person.id !== id)
   
     response.status(204).end()
-  })  
+})  
   
+// Add new person
+const generateId = () => {
+    var max = 99999
+    var min = 10000
+    return Math.floor(Math.random() * (max - min) + min);
+}
+app.post('/api/phonebook', (request, response) => {
+    const body = request.body
+    if (!body.name || (!body.number) ) {
+        return response.status(400).json({ 
+            error: 'name or number missing' 
+        })
+    }
+    if (phonebook.find(person => person.name === body.name)) {
+        return response.status(400).json({
+            error: "name must be unique"
+        })
+    }
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId(),
+    }
+    phonebook = phonebook.concat(person)
+    response.json(person)
+})
+
+
 // Start the server
 const PORT = 3001
 app.listen(PORT, () => {
