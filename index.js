@@ -4,7 +4,7 @@ const app = express()
 
 app.use(express.json())
 
-let phonebook = [
+let persons = [
     {
         name: "Arto Hellas",
         number: "040-123456",
@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 app.get('/info', (req, res) => {
     const now = new Date();
     const html = `
-        <p>Phonebook has info for ${phonebook.length} people</p>\n
+        <p>Phonebook has info for ${persons.length} people</p>\n
         <p>${now}</p>
     `
     res.send(html)
@@ -45,12 +45,12 @@ app.get('/info', (req, res) => {
 
 
 // API-page
-app.get('/api/phonebook', (req, res) => {
-    res.json(phonebook)
+app.get('/api/persons', (req, res) => {
+    res.json(persons)
 })
-app.get('/api/phonebook/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    const personObj = phonebook.find(person => person.id === id)
+    const personObj = persons.find(person => person.id === id)
     console.log(personObj)
     if (personObj) {
         response.json(personObj)
@@ -60,9 +60,9 @@ app.get('/api/phonebook/:id', (request, response) => {
 })
 
 // Delete person
-app.delete('/api/phonebook/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    phonebook = phonebook.filter(person => person.id !== id)
+    persons = persons.filter(person => person.id !== id)
   
     response.status(204).end()
 })  
@@ -73,14 +73,14 @@ const generateId = () => {
     var min = 10000
     return Math.floor(Math.random() * (max - min) + min);
 }
-app.post('/api/phonebook', (request, response) => {
+app.post('/api/persons', (request, response) => {
     const body = request.body
     if (!body.name || (!body.number) ) {
         return response.status(400).json({ 
             error: 'name or number missing' 
         })
     }
-    if (phonebook.find(person => person.name === body.name)) {
+    if (persons.find(person => person.name === body.name)) {
         return response.status(400).json({
             error: "name must be unique"
         })
@@ -90,7 +90,7 @@ app.post('/api/phonebook', (request, response) => {
         number: body.number,
         id: generateId(),
     }
-    phonebook = phonebook.concat(person)
+    persons = persons.concat(person)
     response.json(person)
 })
 
