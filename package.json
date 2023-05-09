@@ -27,5 +27,6 @@
   "bugs": {
     "url": "https://github.com/strengv1/FullStackOpen/issues"
   },
-  "homepage": "https://github.com/strengv1/FullStackOpen#readme"
+  "homepage": "https://github.com/strengv1/FullStackOpen#readme",
+  "proxy": "http://localhost:3001"
 }
