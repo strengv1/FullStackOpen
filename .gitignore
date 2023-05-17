@@ -1,4 +1,6 @@
-node_modules
+/node_modules
 .env
-part3/sandbox/node_modules
+part1/sandbox/
+part2/sandbox/
+part3/sandbox/
 part3/.env
