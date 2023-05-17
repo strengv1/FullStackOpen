@@ -40,46 +40,35 @@ app.get('/api/persons', (req, res) => {
 
 // Get one
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const personObj = persons.find(person => person.id === id)
-    console.log(personObj)
-    if (personObj) {
-        response.json(personObj)
-    } else {
-        response.status(404).end() 
-    }
+    Person.findById(request.params.id).then(person => {
+        response.json(person)
+    })
 })
 
-// Delete person
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-  
-    response.status(204).end()
-})  
-  
-// Add new person
-
+// Create new person
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    if (!body.name || (!body.number) ) {
+    if (body.name === undefined || (body.number === undefined) ) {
         return response.status(400).json({ 
             error: 'name or number missing' 
         })
     }
-    if (persons.find(person => person.name === body.name)) {
-        return response.status(400).json({
-            error: "name must be unique"
-        })
-    }
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number
-    }
+    })
     person.save().then(savedPerson => {
         response.json(savedPerson)
     })
 })
+
+// Delete person
+app.delete('/api/persons/:id', (request, response) => {
+    // const id = Number(request.params.id)
+    // persons = persons.filter(person => person.id !== id)
+  
+    // response.status(204).end()
+})  
 
 
 // Start the server
