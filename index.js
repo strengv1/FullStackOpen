@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
@@ -18,7 +19,6 @@ app.use(express.static('build'))
 app.get('/', (req, res) => {
     res.send('<h2>Phonebook!</h2>')
 })
-
 
 // info page
 app.get('/info', (req, res) => {
