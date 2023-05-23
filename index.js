@@ -6,7 +6,6 @@ const cors = require('cors')
 const Person = require('./models/person')
 
 const errorHandler = (error, request, response, next) => {
-    console.log("errorhandler jihuu")
     console.error(error.message)
     if (error.name === 'CastError') {
       return response.status(400).send({ error: 'malformatted id' })
@@ -23,20 +22,17 @@ app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] :response-time ms :body'))
 app.use(express.static('build'))
 
-
-// Homepage
-app.get('/', (req, res) => {
-    res.send('<h2>Phonebook!</h2>')
-})
-
 // info page
-app.get('/info', (req, res) => {
-    const now = new Date();
-    const html = `
-        <p>Phonebook has info for ${persons.length} people</p>\n
-        <p>${now}</p>
-    `
-    res.send(html)
+app.get('/info', (req, res, next) => {
+    Person.find({}).then(persons => {
+        const now = new Date();
+        const html = `
+            <p>Phonebook has info for ${persons.length} people</p>\n
+            <p>${now}</p>
+        `
+        res.send(html)
+    })
+    .catch(error => next(error))
 })
 
 // Get all
