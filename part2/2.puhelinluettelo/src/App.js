@@ -91,9 +91,9 @@ const PersonForm = ({ persons, setPersons, showNotification }) => {
           showNotification(`Added ${returnedPerson.name}`, false)
       })
       .catch(error => {
-        showNotification(`Something went wrong`, true)
-        alert(`Error: ${error}`)}
-      )
+        showNotification(error.response.data.error, true)
+        //alert(`Error: ${error}`)
+      })
     }
   }
 
