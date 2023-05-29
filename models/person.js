@@ -20,7 +20,18 @@ const personSchema = new mongoose.Schema({
       minlength: 3,
       required: true
     },
-    number: String
+    number: {
+      type: String,
+      validate: {
+        validator: num => {
+          const parts = num.split("-")
+          return (num.length >= 8) &&
+                 (parts.length === 2) && 
+                 (parts[0].length === 2 || parts[0].length === 3)
+        },
+        message: props => `${props.value} is not formatted correctly`
+      }
+    },
 })
   
 
