@@ -1,6 +1,6 @@
 import axios from 'axios'
+// const baseUrl = '/persons' if you want to run this individually with db.json
 const baseUrl = '/api/persons'
-
 
 const getAll = () => {
     const request = axios.get(baseUrl)
