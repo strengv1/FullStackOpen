@@ -2,10 +2,10 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Miksi node on helppoa ja kivaa",
-    "author": "Kalle Koodari",
-    "url": "hieno-osoite.com",
-    "likes": 420
+    "title": "Kuinka koodi jaetaan moduuleihin",
+    "author": "Heikki Häkkeri",
+    "url": "l33tcode.zoom",
+    "likes": -12
 }
 
 ###
