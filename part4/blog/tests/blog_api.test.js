@@ -29,6 +29,19 @@ test('there are three blogs', async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
+test('a specific blog is within the returned blogs', async () => {
+  const response = await api.get('/api/blogs')
+  const title = response.body.map(r => r.title)
+  expect(title).toContain(
+    'Miksi testaaminen on helppoa ja kivaa'
+  )
+})
+
+test('identifying field is named id', async () => {
+  const response = await api.get('/api/blogs')
+  expect(response.body[0].id).toBeDefined()
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
