@@ -2,10 +2,10 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Kuinka koodi jaetaan moduuleihin",
-    "author": "Heikki Häkkeri",
-    "url": "l33tcode.zoom",
-    "likes": -12
+    "title": "Miten se jaettiinkaan",
+    "author": "Ville",
+    "url": ":(.com",
+    "likes": 12
 }
 
 ###
