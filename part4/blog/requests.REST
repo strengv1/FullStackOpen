@@ -2,12 +2,12 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Miten se jaettiinkaan",
+    "title": "Uusi blogi",
     "author": "Ville",
-    "url": ":(.com",
-    "likes": 12
+    "url": "jee.com",
+    "likes": 0
 }
 
 ###
 
-DELETE http://localhost:3003/api/blogs/647ef876c4725422fe519fb8
+DELETE http://localhost:3003/api/blogs/649acd9bcb3ef6a6b1a942ee

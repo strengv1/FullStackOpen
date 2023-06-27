@@ -42,6 +42,30 @@ test('identifying field is named id', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Uusi blogi',
+    author: 'Pekka Postaaja',
+    url: 'pekkapostaaja.fi',
+    likes: 0
+  }
+
+  // a blog can be added
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  // db has one more blog
+  const dbInTheEnd = await helper.blogsInDb()
+  expect(dbInTheEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  // db contains the new blog
+  const titles = dbInTheEnd.map(r => r.title)
+  expect(titles).toContain('Uusi blogi')
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })

@@ -22,7 +22,7 @@ const initialBlogs = [
 ]
 
 const nonExistingId = async () => {
-  const blog = new Blog({})
+  const blog = new Blog({ title: 'tämä poistuu pian' })
   await blog.save()
   await blog.remove()
 
