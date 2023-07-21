@@ -67,7 +67,7 @@ test('a valid blog can be added', async () => {
 })
 
 test('value of likes defaults to 0', async () => {
-  const newBlogWithNoLikesDefined = {
+  const blogWithNoLikesDefined = {
     title: 'No likes',
     author: 'Pekka Postaaja',
     url: 'pekkapostaaja.fi',
@@ -75,11 +75,39 @@ test('value of likes defaults to 0', async () => {
 
   await api
     .post('/api/blogs')
-    .send(newBlogWithNoLikesDefined)
+    .send(blogWithNoLikesDefined)
 
   const dbInTheEnd = await helper.blogsInDb()
   const blogWithNoLikes = dbInTheEnd.find(blog => blog.title === 'No likes')
   expect(blogWithNoLikes.likes).toEqual(0)
+})
+
+test('POST without url or title returns status code 400', async () => {
+  const blogWithoutTitle = {
+    author: 'Huono postaaja',
+    url: 'badposter.fi',
+    likes: 2
+  }
+  const blogWithoutUrl = {
+    title: 'Blogi ilman urlia',
+    author: 'Huono postaaja',
+    likes: 2
+  }
+
+  // bad POST returns 400
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutTitle)
+    .expect(400)
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutUrl)
+    .expect(400)
+
+  // db has same amount of blogs as in the beginning
+  const dbInTheEnd = await helper.blogsInDb()
+  expect(dbInTheEnd).toHaveLength(helper.initialBlogs.length)
 })
 
 afterAll(async () => {
