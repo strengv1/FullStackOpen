@@ -66,6 +66,22 @@ test('a valid blog can be added', async () => {
   expect(titles).toContain('Uusi blogi')
 })
 
+test('value of likes defaults to 0', async () => {
+  const newBlogWithNoLikesDefined = {
+    title: 'No likes',
+    author: 'Pekka Postaaja',
+    url: 'pekkapostaaja.fi',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogWithNoLikesDefined)
+
+  const dbInTheEnd = await helper.blogsInDb()
+  const blogWithNoLikes = dbInTheEnd.find(blog => blog.title === 'No likes')
+  expect(blogWithNoLikes.likes).toEqual(0)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
