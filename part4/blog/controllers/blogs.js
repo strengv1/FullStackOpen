@@ -31,11 +31,33 @@ blogsRouter.delete('/:id', async (request, response) => {
   const id = request.params.id
   // Check for a valid mongoose _id. NOTE: Does not check if id exists in database
   if (!isValidObjectId(id)) {
-    return response.status(404).send('Not found')
+    return response.status(404).end()
   }
 
   await Blog.findByIdAndRemove(id)
   response.status(204).end()
+})
+
+// Update likes
+blogsRouter.put('/:id', async (request, response) => {
+  const id = request.params.id
+  if (!isValidObjectId(id)) {
+    return response.status(404).end()
+  }
+
+  const body = request.body
+  const updatedBlog =
+  await Blog.findByIdAndUpdate(
+    id,
+    { likes: body.likes },
+    { new: true }
+  )
+
+  if (updatedBlog) {
+    response.status(200).json(updatedBlog)
+  } else {
+    response.status(404).end()
+  }
 })
 
 module.exports = blogsRouter

@@ -134,6 +134,33 @@ describe('when there is initially some blogs saved', () => {
       )
     })
   })
+
+  describe('editing a blog', () => {
+    test('editing a blog is possible', async () => {
+      const database = await helper.blogsInDb()
+      const blogToBeEdited = database[0]
+      const newBlog = { ...blogToBeEdited, likes: blogToBeEdited.likes + 1 }
+
+      await api
+        .put(`/api/blogs/${blogToBeEdited.id}`)
+        .send(newBlog)
+        .expect(200)
+
+      const dbInTheEnd = await helper.blogsInDb()
+      expect(dbInTheEnd[0].likes).toEqual(helper.initialBlogs[0].likes + 1)
+    })
+
+    test('editing with invalid id returns 404', async () => {
+      const database = await helper.blogsInDb()
+      const blogToBeEdited = database[0]
+      const newBlog = { ...blogToBeEdited, likes: blogToBeEdited.likes + 1 }
+
+      await api
+        .put('/api/blogs/123123123123')
+        .send(newBlog)
+        .expect(404)
+    })
+  })
 })
 
 test('identifying field is named id', async () => {
