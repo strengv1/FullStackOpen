@@ -2,15 +2,15 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Uusi blogi",
-    "author": "Ville",
-    "url": "jee.com",
+    "title": "Poistuva blogi",
+    "author": "Netta Nevahööd",
+    "url": "ihansama.org",
     "likes": 0
 }
 
 ###
 
-DELETE http://localhost:3003/api/blogs/123123123123
+DELETE http://localhost:3003/api/blogs/64cb736758f72a16ce0369bb
 
 ###
 
@@ -33,6 +33,7 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "Lukki86",
-    "name": "Luukas"
+    "username": "Lu",
+    "name": "Luukas",
+    "password": "sal"
 }

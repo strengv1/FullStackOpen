@@ -1,11 +1,13 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-// const User = require('../models/user')
+const User = require('../models/user')
 const { isValidObjectId } = require('mongoose')
 
 // Get all
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog
+    .find({}).populate('user', { username: 1, name: 1 })
+
   response.json(blogs)
 })
 
@@ -13,41 +15,56 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
-  // const user = await User.findById(body.userId)
-
   if (!('title' in body) || !('url' in body)){
     return response.status(400).end()
   }
+  const users = await User.find({})
 
-  const blog = new Blog({
-    title: body.title,
-    author: body.author || '',
-    url: body.url,
-    likes: body.likes || 0,
-    // user: user._id
-  })
+  try {
+    // Find random user and set them as the user
+    let user = users[Math.floor(Math.random()*users.length)]
 
-  const savedBlog = await blog.save()
+    const blog = new Blog({
+      title: body.title,
+      author: body.author || '',
+      url: body.url,
+      likes: body.likes || 0,
+      user: user._id
+    })
+    const savedBlog = await blog.save()
+    // Add this blog to user's blogs
+    if (savedBlog) {
+      user.blogs = user.blogs.concat(savedBlog._id)
+      await user.save()
+    }
 
-  // user.notes = user.notes.concat(savedBlog._id)
-  // await user.save()
-
-  response.status(201).json(savedBlog)
+    response.status(201).json(savedBlog)
+  } catch (err) {
+    return response.status(400).json({ error: err.message }).end()
+  }
 })
 
+async function deleteBlogFromUserDb(blog) {
+  const user = await User.findById(blog.user)
+  user.blogs = user.blogs.filter(b => b.toString() !== blog.id)
+  await user.save()
+}
+
 blogsRouter.delete('/:id', async (request, response) => {
-  const id = request.params.id
   // Check for a valid mongoose _id. NOTE: Does not check if id exists in database
-  if (!isValidObjectId(id)) {
-    return response.status(404).end()
+  if (!isValidObjectId(request.params.id)) {
+    return response.status(400).json({ error: 'Invalid id' }).end()
   }
+  try {
+    const blog = await Blog.findById(request.params.id)
+    await Blog.deleteOne(blog)
 
-  // Find the user and remove the blog from it's blogs
-  // const user = User.findById(request.body.userId)
-  // user.blogs = user.blogs.filter(b => b.id !== id )
+    deleteBlogFromUserDb(blog)
 
-  await Blog.findByIdAndRemove(id)
-  response.status(204).end()
+    response.status(204).end()
+  } catch(err){
+    return response.status(400).json({ error: err.message })
+  }
 })
 
 // Update likes
@@ -59,8 +76,7 @@ blogsRouter.put('/:id', async (request, response) => {
 
   const body = request.body
   const updatedBlog =
-  await Blog.findByIdAndUpdate(
-    id,
+  await Blog.findByIdAndUpdate( id,
     { likes: body.likes },
     { new: true }
   )
