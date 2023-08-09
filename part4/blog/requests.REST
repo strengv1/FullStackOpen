@@ -1,16 +1,17 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0cmVuZ3YiLCJpZCI6IjY0Y2EwYTIyMDY1MzY5ZDYwMjc1ODFlMiIsImlhdCI6MTY5MTU2NTE2NH0.o9EA330BovFyCHtcb5Y2J5Om63bkxHrjQpb3j0z12mM
 
 {
-    "title": "Pyyntöjen lähetys onnistuu VSCodesta REST Clientin avulla",
-    "author": "Fiksu ucco",
-    "url": "REST_client.com",
-    "likes": 6
+    "title": "Token perustaisen kirjautumisen perusteet",
+    "author": "hesan yliopisto",
+    "url": "https://fullstackopen.com/osa4/token_perustainen_kirjautuminen",
+    "likes": 99
 }
 
 ###
 
-DELETE http://localhost:3003/api/blogs/64cb736758f72a16ce0369bb
+DELETE http://localhost:3003/api/blogs/64d33cd24c8c0c930802d89c
 
 ###
 
@@ -36,4 +37,14 @@ Content-Type: application/json
     "username": "Jee",
     "name": "Luukas",
     "password": "sal"
+}
+
+###
+
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "strengv",
+    "password": "salasana"
 }

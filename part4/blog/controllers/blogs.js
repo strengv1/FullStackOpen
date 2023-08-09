@@ -2,6 +2,7 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { isValidObjectId } = require('mongoose')
+const jwt = require('jsonwebtoken')
 
 // Get all
 blogsRouter.get('/', async (request, response) => {
@@ -11,6 +12,14 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
+const getTokenFromRequest = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('bearer ')) {
+    return authorization.replace('bearer ', '')
+  }
+  return null
+}
+
 // Create new
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
@@ -18,12 +27,13 @@ blogsRouter.post('/', async (request, response) => {
   if (!('title' in body) || !('url' in body)){
     return response.status(400).end()
   }
-  const users = await User.find({})
+  const decodedToken = jwt.verify(getTokenFromRequest(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
 
   try {
-    // Find random user and set them as the user
-    let user = users[Math.floor(Math.random()*users.length)]
-
     const blog = new Blog({
       title: body.title,
       author: body.author || '',
