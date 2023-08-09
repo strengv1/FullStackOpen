@@ -46,14 +46,16 @@ blogsRouter.post('/', async (request, response) => {
 
 async function deleteBlogFromUserDb(blog) {
   const user = await User.findById(blog.user)
-  user.blogs = user.blogs.filter(b => b.toString() !== blog.id)
-  await user.save()
+  if (user) {
+    user.blogs = user.blogs.filter(b => b.toString() !== blog.id)
+    await user.save()
+  }
 }
 
 blogsRouter.delete('/:id', async (request, response) => {
   // Check for a valid mongoose _id. NOTE: Does not check if id exists in database
   if (!isValidObjectId(request.params.id)) {
-    return response.status(400).json({ error: 'Invalid id' }).end()
+    return response.status(404).json({ error: 'Invalid id' }).end()
   }
   try {
     const blog = await Blog.findById(request.params.id)

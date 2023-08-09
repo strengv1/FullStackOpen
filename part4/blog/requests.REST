@@ -2,10 +2,10 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Poistuva blogi",
-    "author": "Netta Nevahööd",
-    "url": "ihansama.org",
-    "likes": 0
+    "title": "Pyyntöjen lähetys onnistuu VSCodesta REST Clientin avulla",
+    "author": "Fiksu ucco",
+    "url": "REST_client.com",
+    "likes": 6
 }
 
 ###
@@ -33,7 +33,7 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "Lu",
+    "username": "Jee",
     "name": "Luukas",
     "password": "sal"
 }

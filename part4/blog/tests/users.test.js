@@ -76,7 +76,7 @@ describe('when there is initially one user at db', () => {
       .send(newUserNoName)
       .expect(400)
       .expect('Content-Type', /application\/json/)
-    expect(result.body.error).toContain('Username missing')
+    expect(result.body.error).toContain('`username` is required')
 
     result = await api
       .post('/api/users')
@@ -108,14 +108,14 @@ describe('when there is initially one user at db', () => {
       .send(newUserShortName)
       .expect(400)
       .expect('Content-Type', /application\/json/)
-    expect(result.body.error).toContain('Username must be at least 3 characters')
+    expect(result.body.error).toContain('at least 3 characters')
 
     result = await api
       .post('/api/users')
       .send(newUserShortPassword)
       .expect(400)
       .expect('Content-Type', /application\/json/)
-    expect(result.body.error).toContain('Password must be at least 3 characters')
+    expect(result.body.error).toContain('at least 3 characters')
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
