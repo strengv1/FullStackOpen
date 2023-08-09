@@ -3,6 +3,7 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const { isValidObjectId } = require('mongoose')
 const jwt = require('jsonwebtoken')
+const middleware = require('../utils/middleware')
 
 // Get all
 blogsRouter.get('/', async (request, response) => {
@@ -13,15 +14,14 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 // Create new
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response, next) => {
   const body = request.body
 
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  const user = await User.findById(decodedToken.id)
-
+  const user = request.user
   try {
     const blog = new Blog({
       title: body.title,
@@ -44,23 +44,11 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 async function deleteBlogFromUserDb(blog, user) {
-  if (user){
-    user.blogs = user.blogs.filter(b => b.toString() !== blog.id)
-    await user.save()
-  }
-}
-async function getUserAndAuthenticate(blog, reqToken) {
-  const userFromBlog = await User.findById(blog.user)
-  const userFromToken = jwt.verify(reqToken, process.env.SECRET)
-  const auth = userFromToken.id === userFromBlog._id.toString()
-
-  console.log(userFromBlog)
-  console.log(userFromToken.id, '===', userFromBlog._id.toString())
-
-  return { userFromBlog, auth }
+  user.blogs = user.blogs.filter(b => b.toString() !== blog.id)
+  await user.save()
 }
 
-blogsRouter.delete('/:id', async (request, response, next) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
   // Check for a valid mongoose _id. NOTE: Does not check if id exists in database
   if (!isValidObjectId(request.params.id)) {
     return response.status(400).json({ error: 'Invalid id' }).end()
@@ -70,9 +58,10 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     if (!blog) {
       return response.status(404).json({ error: 'blog not found' })
     }
+    const user = request.user
+    const userFromBlog = await User.findById(blog.user)
 
-    const { user, auth } = await getUserAndAuthenticate(blog, request.token)
-    if (auth){
+    if (user && user.id === userFromBlog._id.toString()){
       await Blog.deleteOne(blog)
       await deleteBlogFromUserDb(blog, user)
       response.status(204).end()
