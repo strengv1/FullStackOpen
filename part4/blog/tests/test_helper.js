@@ -12,13 +12,13 @@ const initialBlogs = [
     title: 'Miksi testaaminen on helppoa ja kivaa',
     author: 'Teemu Testeri',
     url: 'testisivu.com',
-    likes: 13
+    likes: 13,
   },
   {
     title: 'Miksi node on helppoa ja kivaa',
     author: 'Kalle Koodari',
     url: 'hieno-osoite.com',
-    likes: 4
+    likes: 4,
   }
 ]
 

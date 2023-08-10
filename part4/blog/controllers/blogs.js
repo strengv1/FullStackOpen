@@ -14,7 +14,6 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
   const user = request.user
-
   if (!request.token) return response.status(401).json({ error: 'token not found' })
 
   try {
@@ -82,11 +81,7 @@ blogsRouter.put('/:id', async (request, response) => {
     { new: true }
   )
 
-  if (updatedBlog) {
-    response.status(200).json(updatedBlog)
-  } else {
-    response.status(404).end()
-  }
+  updatedBlog ? response.status(200).json(updatedBlog) : response.status(404).end()
 })
 
 module.exports = blogsRouter

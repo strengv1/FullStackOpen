@@ -1,16 +1,16 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZSIsImlkIjoiNjRkMzJlODBlMWQwYTE3YTA1MzM0NDVmIiwiaWF0IjoxNjkxNjU0ODIxLCJleHAiOjE2OTE2NTg0MjF9.-CZKaihOto1Zfk-k02-wubPyhpfsAs_-llP4mmAIIww
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0cmVuZ3YiLCJpZCI6IjY0Y2EwYTIyMDY1MzY5ZDYwMjc1ODFlMiIsImlhdCI6MTY5MTY2OTI4MSwiZXhwIjoxNjkxNjcyODgxfQ.O4PO4R19l6EB-_5W5ytpwJM-IgQ3p3og8Y42wujcASc
 
 {
-    "title": "Queens gambit 5/5",
+    "title": "Katoaako kaikkialta",
     "author": "Ville",
-    "url": "chess.com"
+    "url": "huii.com"
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/64d49afda9022087e2881e5a
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZSIsImlkIjoiNjRkMzJlODBlMWQwYTE3YTA1MzM0NDVmIiwiaWF0IjoxNjkxNjU0ODIxLCJleHAiOjE2OTE2NTg0MjF9.-CZKaihOto1Zfk-k02-wubPyhpfsAs_-llP4mmAIIww
+DELETE http://localhost:3003/api/blogs/64d4d3f5cf174b30bede5d37
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0cmVuZ3YiLCJpZCI6IjY0Y2EwYTIyMDY1MzY5ZDYwMjc1ODFlMiIsImlhdCI6MTY5MTY2OTI4MSwiZXhwIjoxNjkxNjcyODgxfQ.O4PO4R19l6EB-_5W5ytpwJM-IgQ3p3og8Y42wujcASc
 
 ###
 GET http://localhost:3003/api/blogs
@@ -43,6 +43,6 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username": "Jee",
-    "password": "sal"
+    "username": "strengv",
+    "password": "salasana"
 }
