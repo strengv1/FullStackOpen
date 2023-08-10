@@ -1,17 +1,16 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplcmUiLCJpZCI6IjY0ZDM2OWIyOTE0OTAzNjg2MGZjNTlhNyIsImlhdCI6MTY5MTU4MzQwNiwiZXhwIjoxNjkxNTg3MDA2fQ.Vff3EMXBfy_w7mvmT0YzedPQWPypuoOqYg2PVDbcSr4
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZSIsImlkIjoiNjRkMzJlODBlMWQwYTE3YTA1MzM0NDVmIiwiaWF0IjoxNjkxNjU0ODIxLCJleHAiOjE2OTE2NTg0MjF9.-CZKaihOto1Zfk-k02-wubPyhpfsAs_-llP4mmAIIww
 
 {
-    "username": "Jere",
-    "title": "Poistuu pian",
-    "author": "minä",
-    "url": "asd.fi"
+    "title": "Queens gambit 5/5",
+    "author": "Ville",
+    "url": "chess.com"
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/64d383c5335fa0bb8277af68
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplcmUiLCJpZCI6IjY0ZDM2OWIyOTE0OTAzNjg2MGZjNTlhNyIsImlhdCI6MTY5MTU4MzQwNiwiZXhwIjoxNjkxNTg3MDA2fQ.Vff3EMXBfy_w7mvmT0YzedPQWPypuoOqYg2PVDbcSr4
+DELETE http://localhost:3003/api/blogs/64d49afda9022087e2881e5a
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZSIsImlkIjoiNjRkMzJlODBlMWQwYTE3YTA1MzM0NDVmIiwiaWF0IjoxNjkxNjU0ODIxLCJleHAiOjE2OTE2NTg0MjF9.-CZKaihOto1Zfk-k02-wubPyhpfsAs_-llP4mmAIIww
 
 ###
 GET http://localhost:3003/api/blogs
@@ -44,6 +43,6 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username": "Jere",
-    "password": "salasana"
+    "username": "Jee",
+    "password": "sal"
 }

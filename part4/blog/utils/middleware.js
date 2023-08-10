@@ -5,14 +5,19 @@ const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization')
   if (authorization && authorization.startsWith('bearer ')) {
     req.token = authorization.replace('bearer ', '')
+  } else {
+    req.token = null
   }
   next()
 }
 
 async function userExtractor(req, res, next) {
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
-  req.user = await User.findById(decodedToken.id)
-
+  const decodedToken = req.token ?
+    jwt.verify(req.token, process.env.SECRET) :
+    null
+  req.user = decodedToken ?
+    await User.findById(decodedToken.id) :
+    null
   next()
 }
 

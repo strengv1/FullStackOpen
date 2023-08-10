@@ -101,6 +101,24 @@ describe('when there is initially some blogs saved', () => {
       const dbInTheEnd = await helper.blogsInDb()
       expect(dbInTheEnd).toHaveLength(helper.initialBlogs.length)
     })
+    test('addition without a token returns 401', async () => {
+      const newBlog = {
+        title: 'Ei mene läpi',
+        author: 'Teemu Tokeniton',
+        url: 'tokenitonelama.fi'
+      }
+
+      // a blog can be added
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+        .expect('Content-Type', /application\/json/)
+
+      // db stays the same
+      const dbInTheEnd = await helper.blogsInDb()
+      expect(dbInTheEnd).toHaveLength(helper.initialBlogs.length)
+    })
   })
 
   describe('deletion of a blog', () => {

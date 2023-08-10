@@ -2,26 +2,21 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { isValidObjectId } = require('mongoose')
-const jwt = require('jsonwebtoken')
-const middleware = require('../utils/middleware')
 
 // Get all
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 })
-
   response.json(blogs)
 })
 
 // Create new
-blogsRouter.post('/', middleware.userExtractor, async (request, response, next) => {
+blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
   const user = request.user
+
+  if (!request.token) return response.status(401).json({ error: 'token not found' })
+
   try {
     const blog = new Blog({
       title: body.title,
@@ -48,7 +43,7 @@ async function deleteBlogFromUserDb(blog, user) {
   await user.save()
 }
 
-blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
+blogsRouter.delete('/:id', async (request, response, next) => {
   // Check for a valid mongoose _id. NOTE: Does not check if id exists in database
   if (!isValidObjectId(request.params.id)) {
     return response.status(400).json({ error: 'Invalid id' }).end()
