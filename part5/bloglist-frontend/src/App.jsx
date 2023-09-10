@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import './index.css'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,7 +13,9 @@ const App = () => {
   const [newTitle, setNewTitle] = useState('') 
   const [newAuthor, setNewAuthor] = useState('') 
   const [newUrl, setNewUrl] = useState('')
-
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationIsError, setNotificationIsError] = useState(true)
+  
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -25,6 +29,14 @@ const App = () => {
       setUser(user)
     }
   }, [])
+
+  const showNotification = (message, isError) => {
+    setNotificationMessage(message)
+    setNotificationIsError(isError)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -40,11 +52,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log(exception)
-      
-      setTimeout(() => {
-        // Tyhjennä error
-      }, 5000)
+      showNotification('Username or password incorrect', true)
     }
   }
   const addNewBlog = (event) => { 
@@ -59,14 +67,13 @@ const App = () => {
         .create(blogObject, user)
         .then(returnedBlog => {
           setBlogs(blogs.concat(returnedBlog))
+          showNotification(`a new blog ${newTitle} by ${newAuthor} added`, false)
           setNewTitle('')
           setNewAuthor('')
           setNewUrl('')
-          // showNotification(`Added ${returnedPerson.name}`, false)
       })
       .catch(error => {
-        //showNotification(error.response.data.error, true)
-        console.log(`Error: ${error}`)
+        showNotification(error.response.data.error, true)
       })
     } catch (exception) {
       console.log(exception)
@@ -109,23 +116,25 @@ const App = () => {
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h2>Log in to application</h2>
+      <Notification message={notificationMessage}
+                    isError={notificationIsError}/>
       <div>
         username
           <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
       </div>
       <div>
         password
           <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
       </div>
       <button type="submit">login</button>
     </form>      
@@ -143,6 +152,9 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={notificationMessage}
+                    isError={notificationIsError}/>
+
       <p>
         logged in as {user.name}
         <button onClick={() => logout()}>Logout</button>
