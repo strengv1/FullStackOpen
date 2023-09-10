@@ -4,7 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
-import NewBlogForm from './components/NewBlogForm'
+import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
 const App = () => {
@@ -50,6 +50,7 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setNotificationMessage(null)
     } catch (exception) {
       showNotification('Username or password incorrect', true)
     }
@@ -120,13 +121,15 @@ const App = () => {
         <button onClick={() => logout()}>Logout</button>
       </p>
       <Togglable buttonLabel="add new blog" ref={blogFormRef}>
-        <NewBlogForm createBlog={addBlog} showNotification={showNotification} />
+        <BlogForm createBlog={addBlog} showNotification={showNotification} />
       </Togglable>
       
-
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <div className="blogs">
+        {blogs.map(blog =>
+                <Blog key={blog.id} blog={blog} />
+              )}
+      </div>
+      
       
     </div>
   )

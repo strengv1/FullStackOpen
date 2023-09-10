@@ -6,3 +6,12 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+.blogs {
+  display:grid;
+  gap: 0.5em;
+}
+.blog {
+  border: solid;
+  border-width: 2px;
+  padding: 0.2em;
+}
