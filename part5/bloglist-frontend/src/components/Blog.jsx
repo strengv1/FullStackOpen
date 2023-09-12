@@ -2,7 +2,7 @@ const Blog = ({ blog, index, handleViewClick, showInfo }) => {
 
   return (
     <div className="blog">
-      <span>{ blog.title }</span>
+      <span>{ blog.title } { blog.author }</span>
       <span><button onClick={() => handleViewClick(index)}>view</button></span>
       <div className="blog-extra-info"
            style={{display: showInfo ? 'block' : 'none'}} >
@@ -14,7 +14,7 @@ const Blog = ({ blog, index, handleViewClick, showInfo }) => {
           <button onClick={() => console.log('like ', blog.title)}>like</button>
         </div>
         <div>
-          {blog.author}
+          { blog.user.name }
         </div>
       </div>
     </div>
