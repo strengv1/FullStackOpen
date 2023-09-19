@@ -117,6 +117,7 @@ const App = () => {
   }
 
   const handleLikeClick = likedBlog => {
+    const backupUser = likedBlog.user
     const newBlog = {
       ...likedBlog,
       likes: likedBlog.likes + 1,
@@ -125,11 +126,9 @@ const App = () => {
 
     blogService.update(likedBlog.id, newBlog)
       .then(returnedBlog => {
-        setBlogs(blogs.map(b => b.id !== likedBlog.id ? b : returnedBlog))
-        setFetchData(!fetchData) 
-        // This causes flickering of the user's name when liking, a proper solution
-        // would maybe be to fetch the user's data and set it to returnedBlog.user before 
-        // calling setBlogs.
+        setBlogs(
+          blogs.map(b => b.id !== likedBlog.id ? b : {...returnedBlog, user: backupUser})
+        )
       })
   }
 
