@@ -9,6 +9,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [blogsToShow, setBlogsToShow] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState('')
@@ -16,9 +17,10 @@ const App = () => {
   const [notificationIsError, setNotificationIsError] = useState(true)
   
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs => {
       setBlogs( blogs )
-    )  
+      setBlogsToShow(new Array(blogs.length).fill(false))
+    })
   }, [])
 
   useEffect(() => {
@@ -124,7 +126,7 @@ const App = () => {
         <BlogForm createBlog={addBlog} showNotification={showNotification} />
       </Togglable>
       
-      <BlogList blogs={blogs}/>
+      <BlogList blogs={blogs} blogsToShow={blogsToShow} setBlogsToShow={setBlogsToShow}/>
       
     </div>
   )
