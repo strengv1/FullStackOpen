@@ -16,4 +16,13 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create }
+const update = (id, updatedBlog) => {
+  const request = axios.put(`${baseUrl}/${id}`, updatedBlog)
+  return request.then(response => response.data)
+}
+
+export default { 
+  getAll,
+  create,
+  update
+}

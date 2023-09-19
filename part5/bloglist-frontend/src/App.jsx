@@ -66,7 +66,7 @@ const App = () => {
         .create(blogObject, user)
         .then(returnedBlog => {
           setBlogs(blogs.concat(returnedBlog))
-          setFetchData(!fetchData) // Fetch blogs from database when this changes value
+          setFetchData(!fetchData)
         }
           
         )
@@ -109,6 +109,30 @@ const App = () => {
     </form>      
   )
 
+  // When clicked, toggle the state of the boolean in that index
+  const handleViewClick = (index) => {
+    const newBlogsToShow = [...blogsToShow]
+    newBlogsToShow[index] = !newBlogsToShow[index]
+    setBlogsToShow(newBlogsToShow)
+  }
+
+  const handleLikeClick = likedBlog => {
+    const newBlog = {
+      ...likedBlog,
+      likes: likedBlog.likes + 1,
+      user: likedBlog.user.id
+    }
+
+    blogService.update(likedBlog.id, newBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(b => b.id !== likedBlog.id ? b : returnedBlog))
+        setFetchData(!fetchData) 
+        // This causes flickering of the user's name when liking, a proper solution
+        // would maybe be to fetch the user's data and set it to returnedBlog.user before 
+        // calling setBlogs.
+      })
+  }
+
   const logout = () => {
     window.localStorage.removeItem('loggedBlogUser')
     window.location.reload(false)
@@ -132,10 +156,15 @@ const App = () => {
         <button onClick={() => logout()}>Logout</button>
       </p>
       <Togglable buttonLabel="add new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} showNotification={showNotification} />
+        <BlogForm createBlog={addBlog} showNotification={showNotification}/>
       </Togglable>
       
-      <BlogList blogs={blogs} blogsToShow={blogsToShow} setBlogsToShow={setBlogsToShow}/>
+      <BlogList
+        blogs={blogs}
+        blogsToShow={blogsToShow}
+        handleViewClick={handleViewClick}
+        handleLikeClick={handleLikeClick}
+      />
       
     </div>
   )

@@ -1,4 +1,4 @@
-const Blog = ({ blog, index, handleViewClick, showInfo }) => {
+const Blog = ({ blog, index, showInfo, handleViewClick, handleLikeClick }) => {
 
   return (
     <div className="blog">
@@ -13,7 +13,7 @@ const Blog = ({ blog, index, handleViewClick, showInfo }) => {
         </div>
         <div>
           likes: { blog.likes }
-          <button onClick={() => console.log('like ', blog.title)}>like</button>
+          <button onClick={() => handleLikeClick(blog)}>like</button>
         </div>
         <div>
           { blog.user.name }
