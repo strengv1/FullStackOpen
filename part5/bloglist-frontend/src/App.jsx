@@ -9,19 +9,21 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [blogsToShow, setBlogsToShow] = useState([])
+  const [blogsToShow, setBlogsToShow] = useState(
+    new Array(blogs.length).fill(false)
+  )
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [notificationIsError, setNotificationIsError] = useState(true)
-  
+  const [fetchData, setFetchData] = useState(true) // weird solution for 5.8* but seems to work?
+
   useEffect(() => {
     blogService.getAll().then(blogs => {
       setBlogs( blogs )
-      setBlogsToShow(new Array(blogs.length).fill(false))
     })
-  }, [])
+  }, [fetchData]) 
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
@@ -64,9 +66,16 @@ const App = () => {
         .create(blogObject, user)
         .then(returnedBlog => {
           setBlogs(blogs.concat(returnedBlog))
-      })
+          setFetchData(!fetchData) // Fetch blogs from database when this changes value
+        }
+          
+        )
       .catch(error => {
-        showNotification(error.response ? error.response.data.error : 'Unidentified error occured, error:', error, true)
+        showNotification(
+          error.response ?
+          error.response.data.error :
+          'Unidentified error occured, error:', error, true
+        )
       })
     } catch (exception) {
       console.log(exception)
