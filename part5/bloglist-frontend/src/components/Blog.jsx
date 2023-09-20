@@ -1,4 +1,7 @@
-const Blog = ({ blog, index, showInfo, handleViewClick, handleLikeClick, removeBlog }) => {
+const Blog = ({ blog, index, showInfo, functions }) => {
+  const handleViewClick = functions[0]
+  const handleLikeClick = functions[1] 
+  const removeBlog = functions[2]
 
   return (
     <div className="blog">
@@ -18,7 +21,7 @@ const Blog = ({ blog, index, showInfo, handleViewClick, handleLikeClick, removeB
         <div>
           { blog.user.name }
         </div>
-        <button onClick={() => removeBlog(blog)}>Remove</button>
+        <button onClick={() => removeBlog(blog, index)}>Remove</button>
       </div>
     </div>
   )

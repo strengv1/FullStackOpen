@@ -132,8 +132,16 @@ const App = () => {
         )
       })
   }
+  const removeIdxFromBlogsToShow = idx => {
+    var newArray = [...blogsToShow]; // make a separate copy of the array
+    if (idx !== -1) {
+      newArray.splice(idx, 1);
+      setBlogsToShow( newArray );
+    }
+  }
+  const removeBlog = (blog, idx) => {
+    removeIdxFromBlogsToShow(idx)
 
-  const removeBlog = blog => {
     const removeThis = blogs.find( b => b.id === blog.id)
     
     if ( window.confirm(`Remove blog ${removeThis.title} by ${removeThis.author}?`) ) {
@@ -142,7 +150,9 @@ const App = () => {
         .catch(error =>
           console.log('error removing blog:', error)
         )
-      setBlogs(blogs.filter(b => b.id !== removeThis.id))
+
+        // How to NOT do this when an error occurs :3
+        setBlogs(blogs.filter(b => b.id !== removeThis.id))
     }
 
   }
@@ -175,9 +185,7 @@ const App = () => {
       <BlogList
         blogs={blogs}
         blogsToShow={blogsToShow}
-        handleViewClick={handleViewClick}
-        handleLikeClick={handleLikeClick}
-        removeBlog={removeBlog}
+        functions={[handleViewClick, handleLikeClick, removeBlog]}
       />
       
     </div>
