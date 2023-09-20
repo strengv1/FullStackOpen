@@ -2,12 +2,13 @@ import {useState} from 'react'
 import blogService from './../services/blogs'
 import Blog from './Blog'
 
-const BlogList = ({ blogs, blogsToShow, functions }) => {
+const BlogList = ({ user, blogs, blogsToShow, functions }) => {
   
   return (
     <div className="blogs">
       {blogs.map((blog, index) =>
           <Blog key={blog.id}
+            user={user}
             blog={blog}
             index={index}
             showInfo={blogsToShow[index]}

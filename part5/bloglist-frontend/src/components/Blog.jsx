@@ -1,4 +1,4 @@
-const Blog = ({ blog, index, showInfo, functions }) => {
+const Blog = ({ user, blog, index, showInfo, functions }) => {
   const handleViewClick = functions[0]
   const handleLikeClick = functions[1] 
   const removeBlog = functions[2]
@@ -21,7 +21,11 @@ const Blog = ({ blog, index, showInfo, functions }) => {
         <div>
           { blog.user.name }
         </div>
+
+        { blog.user.username === user.username && 
         <button onClick={() => removeBlog(blog, index)}>Remove</button>
+        }
+        
       </div>
     </div>
   )

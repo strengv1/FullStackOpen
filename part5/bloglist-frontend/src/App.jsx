@@ -132,18 +132,17 @@ const App = () => {
         )
       })
   }
-  const removeIdxFromBlogsToShow = idx => {
-    var newArray = [...blogsToShow]; // make a separate copy of the array
-    if (idx !== -1) {
-      newArray.splice(idx, 1);
-      setBlogsToShow( newArray );
-    }
-  }
+  
   const removeBlog = (blog, idx) => {
-    removeIdxFromBlogsToShow(idx)
-
+    const removeIdxFromBlogsToShow = idx => {
+      var newArray = [...blogsToShow]; // make a separate copy of the array
+      if (idx !== -1) {
+        newArray.splice(idx, 1);
+        setBlogsToShow( newArray );
+      }
+    }
     const removeThis = blogs.find( b => b.id === blog.id)
-    
+
     if ( window.confirm(`Remove blog ${removeThis.title} by ${removeThis.author}?`) ) {
       blogService
         .remove(removeThis.id, user)
@@ -151,10 +150,10 @@ const App = () => {
           console.log('error removing blog:', error)
         )
 
-        // How to NOT do this when an error occurs :3
+        // How to NOT do this when an error occurs ? :3
         setBlogs(blogs.filter(b => b.id !== removeThis.id))
+        removeIdxFromBlogsToShow(idx)
     }
-
   }
   const logout = () => {
     window.localStorage.removeItem('loggedBlogUser')
@@ -183,6 +182,7 @@ const App = () => {
       </Togglable>
       
       <BlogList
+        user={user}
         blogs={blogs}
         blogsToShow={blogsToShow}
         functions={[handleViewClick, handleLikeClick, removeBlog]}
