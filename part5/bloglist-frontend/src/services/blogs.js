@@ -21,8 +21,19 @@ const update = (id, updatedBlog) => {
   return request.then(response => response.data)
 }
 
+const remove = (id, user) => {
+  let config = {
+    headers: {
+      Authorization: 'bearer ' + user.token,
+    }
+  }  
+  const request = axios.delete(`${baseUrl}/${id}`, config)
+  return request.then(response => response.data)
+}
+
 export default { 
   getAll,
   create,
-  update
+  update,
+  remove
 }

@@ -133,6 +133,19 @@ const App = () => {
       })
   }
 
+  const removeBlog = blog => {
+    const removeThis = blogs.find( b => b.id === blog.id)
+    
+    if ( window.confirm(`Remove blog ${removeThis.title} by ${removeThis.author}?`) ) {
+      blogService
+        .remove(removeThis.id, user)
+        .catch(error =>
+          console.log('error removing blog:', error)
+        )
+      setBlogs(blogs.filter(b => b.id !== removeThis.id))
+    }
+
+  }
   const logout = () => {
     window.localStorage.removeItem('loggedBlogUser')
     window.location.reload(false)
@@ -156,7 +169,7 @@ const App = () => {
         <button onClick={() => logout()}>Logout</button>
       </p>
       <Togglable buttonLabel="add new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} showNotification={showNotification}/>
+        <BlogForm createBlog={addBlog} showNotification={showNotification} />
       </Togglable>
       
       <BlogList
@@ -164,6 +177,7 @@ const App = () => {
         blogsToShow={blogsToShow}
         handleViewClick={handleViewClick}
         handleLikeClick={handleLikeClick}
+        removeBlog={removeBlog}
       />
       
     </div>

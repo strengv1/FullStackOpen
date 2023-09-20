@@ -1,4 +1,4 @@
-const Blog = ({ blog, index, showInfo, handleViewClick, handleLikeClick }) => {
+const Blog = ({ blog, index, showInfo, handleViewClick, handleLikeClick, removeBlog }) => {
 
   return (
     <div className="blog">
@@ -18,6 +18,7 @@ const Blog = ({ blog, index, showInfo, handleViewClick, handleLikeClick }) => {
         <div>
           { blog.user.name }
         </div>
+        <button onClick={() => removeBlog(blog)}>Remove</button>
       </div>
     </div>
   )
