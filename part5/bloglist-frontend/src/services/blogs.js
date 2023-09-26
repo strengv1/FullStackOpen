@@ -6,7 +6,7 @@ const create = (newObject, user) => {
     headers: {
       Authorization: 'bearer ' + user.token,
     }
-  }  
+  }
   const request = axios.post(baseUrl, newObject, config)
   return request.then(response => response.data)
 }
@@ -26,12 +26,12 @@ const remove = (id, user) => {
     headers: {
       Authorization: 'bearer ' + user.token,
     }
-  }  
+  }
   const request = axios.delete(`${baseUrl}/${id}`, config)
   return request.then(response => response.data)
 }
 
-export default { 
+export default {
   getAll,
   create,
   update,

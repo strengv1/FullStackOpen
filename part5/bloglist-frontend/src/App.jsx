@@ -12,8 +12,8 @@ const App = () => {
   const [blogsToShow, setBlogsToShow] = useState(
     new Array(blogs.length).fill(false)
   )
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [notificationIsError, setNotificationIsError] = useState(true)
@@ -21,10 +21,10 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
-      blogs.sort((a, b) => b.likes - a.likes);
+      blogs.sort((a, b) => b.likes - a.likes)
       setBlogs( blogs )
     })
-  }, [fetchData]) 
+  }, [fetchData])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
@@ -51,7 +51,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogUser', JSON.stringify(user)
-      ) 
+      )
       setUser(user)
       setUsername('')
       setPassword('')
@@ -69,15 +69,15 @@ const App = () => {
           setBlogs(blogs.concat(returnedBlog))
           setFetchData(!fetchData)
         }
-          
+
         )
-      .catch(error => {
-        showNotification(
-          error.response ?
-          error.response.data.error :
-          'Unidentified error occured, error:', error, true
-        )
-      })
+        .catch(error => {
+          showNotification(
+            error.response ?
+              error.response.data.error :
+              'Unidentified error occured, error:', error, true
+          )
+        })
     } catch (exception) {
       console.log(exception)
     }
@@ -87,27 +87,27 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <h2>Log in to application</h2>
       <Notification message={notificationMessage}
-                    isError={notificationIsError}/>
+        isError={notificationIsError}/>
       <div>
         username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+        <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
       </div>
       <div>
         password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
+        <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   // When clicked, toggle the state of the boolean in that index
@@ -128,17 +128,17 @@ const App = () => {
     blogService.update(likedBlog.id, newBlog)
       .then(returnedBlog => {
         setBlogs(
-          blogs.map(b => b.id !== likedBlog.id ? b : {...returnedBlog, user: backupUser})
+          blogs.map(b => b.id !== likedBlog.id ? b : { ...returnedBlog, user: backupUser })
         )
       })
   }
-  
+
   const removeBlog = (blog, idx) => {
     const removeIdxFromBlogsToShow = idx => {
-      var newArray = [...blogsToShow]; // make a separate copy of the array
+      var newArray = [...blogsToShow] // make a separate copy of the array
       if (idx !== -1) {
-        newArray.splice(idx, 1);
-        setBlogsToShow( newArray );
+        newArray.splice(idx, 1)
+        setBlogsToShow( newArray )
       }
     }
     const removeThis = blogs.find( b => b.id === blog.id)
@@ -150,9 +150,10 @@ const App = () => {
           console.log('error removing blog:', error)
         )
 
-        // How to NOT do this when an error occurs ? :3
-        setBlogs(blogs.filter(b => b.id !== removeThis.id))
-        removeIdxFromBlogsToShow(idx)
+      // How to NOT do this when an error occurs ? :3
+      setBlogs(blogs.filter(b => b.id !== removeThis.id))
+      removeIdxFromBlogsToShow(idx)
+      showNotification(`Blog ${blog.title} by ${removeThis.author} was removed succesfully`, false)
     }
   }
   const logout = () => {
@@ -163,7 +164,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   // If not logged in, only render the login form
-  if (!user) { 
+  if (!user) {
     return loginForm()
   }
   // else render the blogs
@@ -171,7 +172,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification message={notificationMessage}
-                    isError={notificationIsError}/>
+        isError={notificationIsError}/>
 
       <p>
         logged in as {user.name}
@@ -180,14 +181,14 @@ const App = () => {
       <Togglable buttonLabel="add new blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} showNotification={showNotification} />
       </Togglable>
-      
+
       <BlogList
         user={user}
         blogs={blogs}
         blogsToShow={blogsToShow}
         functions={[handleViewClick, handleLikeClick, removeBlog]}
       />
-      
+
     </div>
   )
 }
