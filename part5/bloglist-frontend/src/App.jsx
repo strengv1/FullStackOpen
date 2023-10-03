@@ -128,9 +128,13 @@ const App = () => {
     blogService.update(likedBlog.id, newBlog)
       .then(returnedBlog => {
         setBlogs(
-          blogs.map(b => b.id !== likedBlog.id ? b : { ...returnedBlog, user: backupUser })
+          blogs.map(b =>
+            b.id !== likedBlog.id ?
+              b : { ...returnedBlog, user: backupUser }
+          )
         )
       })
+      .catch(error => console.log('error: ', error.data.message))
   }
 
   const removeBlog = (blog, idx) => {
