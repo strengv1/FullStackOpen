@@ -64,14 +64,12 @@ const Footer = () => (
 )
 
 const CreateNew = ( props ) => {
-  const { resetContent, ...content } = useField('text')
-  const { resetAuthor, ...author } = useField('text')
-  const { resetInfo, ...info } = useField('text')
+  const { reset: resetContent, ...content } = useField('text')
+  const { reset: resetAuthor, ...author } = useField('text')
+  const { reset: resetInfo, ...info } = useField('text')
   const navigate = useNavigate()
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    
+  const handleSubmit = () => {
     props.addNew({
       content: content.value,
       author: author.value,
@@ -90,7 +88,7 @@ const CreateNew = ( props ) => {
   }
 
   return (
-    <div onSubmit={handleSubmit}>
+    <div>
       <h2>create a new anecdote</h2>
       <form>
         <div>
@@ -105,8 +103,8 @@ const CreateNew = ( props ) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
-        <button onClick={() => handleReset}>reset</button>
+        <button onClick={() => handleSubmit()}>create</button>
+        <button onClick={() => handleReset()}>reset</button>
       </form>
     </div>
   )
