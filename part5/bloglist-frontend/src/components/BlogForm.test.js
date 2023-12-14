@@ -9,7 +9,9 @@ test('<BlogForm /> updates parent state and calls onSubmit', async () => {
   const createBlog = jest.fn()
   const showNotification = jest.fn()
 
-  render(<BlogForm createBlog={createBlog} showNotification={showNotification} />)
+  render(
+    <BlogForm createBlog={createBlog} showNotification={showNotification} />,
+  )
 
   const inputs = screen.getAllByRole('textbox')
   const createButton = screen.getByText('create')

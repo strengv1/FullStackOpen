@@ -1,21 +1,20 @@
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 const Notification = ({ message, isError }) => {
   if (message === null) {
-    return null
+    return null;
   }
-  const colorStyle = { color: isError ? 'red' : 'green' }
+  const colorStyle = { color: isError ? "red" : "green" };
   return (
-    <div className="error"
-      style={colorStyle}>
+    <div className="error" style={colorStyle}>
       {message}
     </div>
-  )
-}
+  );
+};
 
 Notification.propTypes = {
   message: PropTypes.string,
-  isError: PropTypes.bool.isRequired
-}
+  isError: PropTypes.bool.isRequired,
+};
 
-export default Notification
+export default Notification;

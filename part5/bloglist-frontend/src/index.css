@@ -7,7 +7,7 @@
   margin-bottom: 10px;
 }
 .blogs {
-  display:grid;
+  display: grid;
   gap: 0.2em;
 }
 .blog-title {
