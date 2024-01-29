@@ -18,13 +18,12 @@
 // }
 
 export function calculateBmi(height: number, weight: number) : string {
-  let heightInMeters = height / 100;
-  let bmi = weight / (heightInMeters * heightInMeters)
-  return getBmiMessage(bmi)
+  const heightInMeters = height / 100;
+  const bmi = weight / (heightInMeters * heightInMeters);
+  return getBmiMessage(bmi);
 }
 
 const getBmiMessage = (bmi: number) : string => {
-
   if (bmi < 16) {
     return 'Underweight (Severe thinness)';
   } else if (bmi >= 16 && bmi < 17) {
@@ -42,7 +41,7 @@ const getBmiMessage = (bmi: number) : string => {
   } else {
     return 'Obese (Class III)';
   }
-}
+};
 
 // try {
 //   const { height, weight } = validateBmiArgs(process.argv);

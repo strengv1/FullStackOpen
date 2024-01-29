@@ -8,23 +8,23 @@ interface ReturnValues {
   ratingDesc: string;
 }
 
-const validateExerciseArgs = (args: string[]): number[] => {
-  args = args.slice(2)
+// const validateExerciseArgs = (args: string[]): number[] => {
+//   args = args.slice(2);
   
-  // Check if every arg is a number
-  if (args.every((value) => !isNaN(Number(value)))) {
-    // Map all args to Numbers
-    return args.map((value) => Number(value));    
-  } else {
-    throw new Error('Provided values were not numbers!');
-  }
-}
+//   // Check if every arg is a number
+//   if (args.every((value) => !isNaN(Number(value)))) {
+//     // Map all args to Numbers
+//     return args.map((value) => Number(value));    
+//   } else {
+//     throw new Error('Provided values were not numbers!');
+//   }
+// };
 
-const calculateExercises = (dailyHours: number[], targetAvgHours: number): ReturnValues => {
+export const calculateExercises = (dailyHours: number[], targetAvgHours: number): ReturnValues => {
   const periodLength = dailyHours.length;
   let trainingDays = 0;
   dailyHours.forEach((val) => {
-    if (val > 0) trainingDays += 1
+    if (val > 0) trainingDays += 1;
   });
 
   const sum = dailyHours.reduce((acc, current) => acc + current, 0);
@@ -54,17 +54,17 @@ const calculateExercises = (dailyHours: number[], targetAvgHours: number): Retur
     success,
     rating,
     ratingDesc
-  }
-}
+  };
+};
 
-try {
-  const input = validateExerciseArgs(process.argv);
-  console.log(calculateExercises(input.slice(1), input[0]));
+// try {
+//   const input = validateExerciseArgs(process.argv);
+//   console.log(calculateExercises(input.slice(1), input[0]));
 
-} catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
-}
+// } catch (error: unknown) {
+//   let errorMessage = 'Something bad happened.';
+//   if (error instanceof Error) {
+//     errorMessage += ' Error: ' + error.message;
+//   }
+//   console.log(errorMessage);
+// }
