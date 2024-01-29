@@ -8,6 +8,18 @@ interface ReturnValues {
   ratingDesc: string;
 }
 
+const validateExerciseArgs = (args: string[]): number[] => {
+  args = args.slice(2)
+  
+  // Check if every arg is a number
+  if (args.every((value) => !isNaN(Number(value)))) {
+    // Map all args to Numbers
+    return args.map((value) => Number(value));    
+  } else {
+    throw new Error('Provided values were not numbers!');
+  }
+}
+
 const calculateExercises = (dailyHours: number[], targetAvgHours: number): ReturnValues => {
   const periodLength = dailyHours.length;
   let trainingDays = 0;
@@ -45,5 +57,14 @@ const calculateExercises = (dailyHours: number[], targetAvgHours: number): Retur
   }
 }
 
+try {
+  const input = validateExerciseArgs(process.argv);
+  console.log(calculateExercises(input.slice(1), input[0]));
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+} catch (error: unknown) {
+  let errorMessage = 'Something bad happened.'
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.log(errorMessage);
+}
