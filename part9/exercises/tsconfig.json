@@ -1,7 +1,16 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
-    "types": ["node"],
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "types": ["node", "express"],
   }
-  
 }
