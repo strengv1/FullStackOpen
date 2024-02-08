@@ -77,7 +77,7 @@ const CreateNew = ( props ) => {
       votes: 0
     })
     props.showNotification(`a new anecdote ${content.value} created!`)
-    
+
     navigate('/')
   }
 
