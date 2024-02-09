@@ -1,13 +1,13 @@
 import express from 'express';
-import diaryService from '../services/diaryService';
+import diagnosisService from '../services/diagnosisService';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.send(diaryService.getNonSensitiveEntries());});
+  res.send(diagnosisService.getDiagnoses());});
 
 router.post('/', (_req, res) => {
-  res.send('Saving a diary!');
+  res.send('Saving a diagnosis!');
 });
 
 export default router;
