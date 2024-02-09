@@ -1,3 +1,9 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "eslint.workingDirectories": [
+        "./part9/flightdiary",
+        "./part9/hello",
+        "./part9/patientor",
+        "./part9/patientor-backend",
+      ]
 }
